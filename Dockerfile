@@ -7,9 +7,8 @@ ENV ACCEPT_EULA=Y
 # Copy schema files so the entrypoint can run them at container startup.
 COPY schema.sql /tmp/schema.sql
 COPY DataTest.sql /tmp/DataTest.sql
-COPY docker-entrypoint-initdb.sh /usr/local/bin/docker-entrypoint-initdb.sh
-
-RUN chmod +x /usr/local/bin/docker-entrypoint-initdb.sh
+# Set executable bit at copy time to avoid permission errors during build
+COPY --chmod=0755 docker-entrypoint-initdb.sh /usr/local/bin/docker-entrypoint-initdb.sh
 
 # Expose SQL Server port
 EXPOSE 1433
